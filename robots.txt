@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://umbaubadigital.github.io/sitemap.xml
