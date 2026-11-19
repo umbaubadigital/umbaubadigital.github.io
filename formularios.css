@@ -1,0 +1,37 @@
+/* FORMULÁRIOS (diagnóstico e área do cliente) — usa as variáveis do site */
+.dlg{border:0;padding:0;background:var(--creme);color:var(--folhagem);border-radius:var(--r-lg);width:min(560px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow:auto;box-shadow:0 40px 90px -30px rgba(3,29,28,.7)}
+.dlg::backdrop{background:rgba(3,29,28,.66);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.dlg-in{position:relative;padding:clamp(24px,5vw,40px);display:grid;gap:18px}
+.dlg-x{position:absolute;right:14px;top:14px;width:42px;height:42px;border-radius:50%;border:1px solid var(--linha);background:transparent;color:var(--folhagem);font-size:1.4rem;line-height:1;cursor:pointer}
+.dlg-x:hover{background:rgba(3,29,28,.06)}
+.dlg h2{font-size:clamp(1.7rem,4vw,2.3rem);padding-right:40px}
+.dlg h2 em,.fcard h1 em{font-style:italic;font-weight:400;color:var(--tronco)}
+.dlg .intro,.fcard .intro{color:var(--suave);font-size:.98rem;line-height:1.55}
+.formg{display:grid;gap:16px}
+.campo{display:grid;gap:6px}
+.campo label{font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tronco)}
+.campo label small{font-weight:400;letter-spacing:0;text-transform:none;color:var(--suave)}
+.campo input,.campo select,.campo textarea{width:100%;font:400 1rem var(--sans);color:var(--folhagem);background:var(--papel);border:1px solid var(--linha);border-radius:16px;padding:14px 16px;min-height:50px;transition:border-color .2s,box-shadow .2s}
+.campo textarea{min-height:110px;resize:vertical;line-height:1.5}
+.campo input:focus,.campo select:focus,.campo textarea:focus{outline:none;border-color:var(--folhagem);box-shadow:0 0 0 3px rgba(83,60,39,.18)}
+.campo input[aria-invalid=true],.campo select[aria-invalid=true],.campo textarea[aria-invalid=true]{border-color:#9c3b2b}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:560px){.duas{grid-template-columns:1fr}}
+.check{display:flex;gap:12px;align-items:flex-start;font-size:.86rem;line-height:1.5;color:var(--suave)}
+.check input{margin-top:4px;width:20px;height:20px;flex:none;accent-color:var(--folhagem)}
+.check a{text-decoration:underline}
+.hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
+.erro{color:#9c3b2b;font-size:.9rem;background:rgba(156,59,43,.08);border-radius:14px;padding:12px 16px}
+.okbox{display:grid;gap:14px}
+.okbox .prot{font-family:var(--serif);font-size:1.3rem;color:var(--tronco)}
+.dlg .acoes-f{display:flex;flex-wrap:wrap;gap:12px}
+.pill[disabled]{opacity:.6;cursor:progress;transform:none}
+
+/* página da área do cliente */
+.fpagina{background:var(--folha);min-height:100dvh}
+.ftopo{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1100px;margin:0 auto;padding:18px clamp(18px,4vw,40px)}
+.ftopo img{width:132px;height:auto;display:block}
+.ftopo a.voltar{color:var(--branco);text-decoration:none;font-size:.86rem;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.fcard{max-width:680px;margin:clamp(8px,3vw,32px) auto clamp(24px,6vw,64px);background:var(--creme);border-radius:var(--r-lg);padding:clamp(24px,5vw,48px);display:grid;gap:20px}
+.fcard h1{font-size:clamp(2rem,5vw,3rem)}
+.fnota{font-size:.84rem;color:var(--suave)}
