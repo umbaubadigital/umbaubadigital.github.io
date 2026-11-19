@@ -69,7 +69,7 @@
   /* ---------- área do cliente (página /cliente/) ---------- */
   var fl = $("f-login");
   if (fl) {
-    var codigo = "";
+    var codigo = "", estado = null;
     var sLogin = $("s-login"), sArea = $("s-area");
     var erroLogin = $("erro-login"), btnLogin = $("env-login");
     var fc = $("f-cliente"), errc = $("erro-cliente"), okc = $("ok-cliente"), btc = $("env-cliente");
@@ -111,7 +111,8 @@
         if (!r.ok) throw r;
         codigo = cod;
         try { localStorage.setItem("ub-codigo", cod); } catch (e) {}
-        desenhar(r.dados);
+        estado = r.dados;
+        desenhar(estado);
         sLogin.hidden = true; sArea.hidden = false;
         return true;
       } catch (r) {
@@ -157,8 +158,14 @@
         var r = await enviar("/pedido", dados);
         if (!r.ok) throw r;
         okc.textContent = "Pedido enviado. Número: " + (r.dados.protocolo || "") + ". Ele já aparece na lista acima.";
-        okc.hidden = false; fc.reset();
-        entrar(codigo, true).then(function () { /* atualiza a lista */ });
+        okc.hidden = false;
+        // o KV pode levar até 1 minuto para listar o pedido novo: mostramos já, sem buscar de novo
+        if (estado) {
+          estado.pedidos = [{ protocolo: r.dados.protocolo, tipo: dados.tipo, descricao: dados.descricao, prazo: dados.prazo,
+                              status: "Recebido", recebidoEm: new Date().toISOString() }].concat(estado.pedidos || []);
+          desenhar(estado);
+        }
+        fc.reset();
       } catch (r) {
         var msg = "Não conseguimos enviar agora. Tente de novo em instantes ou chame o Bruno no WhatsApp.";
         if (r && r.status === 403) msg = "Seu código não foi reconhecido. Saia e entre de novo.";
