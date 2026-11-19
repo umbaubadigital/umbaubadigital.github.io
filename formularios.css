@@ -117,16 +117,35 @@ button.pill.pill-linha-escura:hover{background:rgba(3,29,28,.06)}
 .ped-esq details[open] summary::before{content:"− "}
 .ped-esq summary::after{content:none!important;display:none!important}
 .ped-esq details p{margin-top:6px}
-/* catálogo de serviços (vem da Central, sem preços) */
-.catalogo{margin-top:clamp(40px,6vw,72px);display:grid;gap:22px}
-.cat-grade{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.cat{background:var(--papel);border:1px solid var(--linha);border-radius:var(--r-md);padding:clamp(20px,3vw,30px);display:grid;gap:14px;align-content:start}
-.cat h3{font-size:1.5rem}
-.cat-lista{list-style:none;margin:0;padding:0;display:grid;gap:16px}
-.cat-lista li{border-top:1px solid var(--linha);padding-top:14px;display:grid;gap:6px}
-.cat-nome{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-.cat-nome b{font-weight:600;line-height:1.35}
+
+/* serviços da Central: blocos clicáveis e janelas */
 .cat-tag{flex:none;font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;background:var(--branco);color:var(--tronco);padding:4px 12px}
-.cat-lista p{font-size:.92rem;color:var(--suave);line-height:1.55}
-.cat-acao{display:flex;flex-wrap:wrap;gap:12px}
-@media (max-width:760px){.cat-grade{grid-template-columns:1fr}}
+.card-abre{cursor:pointer}
+.card-abre:focus-visible{outline:2px solid var(--palha);outline-offset:4px}
+.card-mais{display:inline-flex;align-items:center;gap:10px;margin-top:16px;font-size:.84rem;font-weight:500;letter-spacing:.04em}
+.card-mais .seta{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(237,228,214,.2);transition:transform .25s var(--ease)}
+.card-mais svg{width:14px;height:14px}
+.k4 .card-mais .seta{background:rgba(3,29,28,.1)}
+.card-abre:hover .card-mais .seta{transform:translateX(4px)}
+.mais-servicos{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:22px}
+.dlg-serv{width:min(880px,calc(100% - 24px));overflow:hidden;display:none}
+.dlg-serv[open]{display:block;overflow:auto}
+.serv-cab{position:relative;padding:clamp(24px,5vw,44px);display:grid;gap:8px;color:var(--branco)}
+.serv-cab.k4{color:var(--folhagem)}
+.serv-cab .sobrenome{font-family:var(--serif);font-style:italic;font-size:1.05rem;opacity:.8}
+.serv-cab h2{font-size:clamp(1.9rem,4.4vw,2.8rem);padding-right:48px}
+.serv-cab p{max-width:56ch;opacity:.85}
+.serv-x{border-color:rgba(237,228,214,.45);color:var(--branco)}
+.serv-x:hover{background:rgba(237,228,214,.14)}
+.serv-cab.k4 .serv-x{border-color:var(--linha);color:var(--folhagem)}
+.serv-corpo{padding:clamp(20px,4vw,36px);display:grid;gap:18px;background:var(--creme)}
+.serv-lista{list-style:none;margin:0;padding:0;display:grid}
+.serv-lista li{display:grid;gap:6px;padding:18px 0;border-top:1px solid var(--linha)}
+.serv-lista li:first-child{border-top:0;padding-top:0}
+.serv-nome{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.serv-nome b{font-weight:600;line-height:1.35;font-size:1.02rem}
+.serv-lista p{font-size:.94rem;color:var(--suave);line-height:1.55}
+.serv-link{font-size:.84rem;font-weight:500;text-decoration:underline;text-underline-offset:3px;width:max-content;color:var(--tronco)}
+.serv-cta{display:flex;flex-wrap:wrap;gap:12px;padding-top:4px}
+/* blocos de serviços com a mesma altura */
+@media (min-width:561px){.cards{align-items:stretch}.card-col{grid-template-rows:minmax(0,1fr) auto}.card-col .card{min-height:0}}

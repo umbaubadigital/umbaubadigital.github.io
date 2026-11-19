@@ -17,12 +17,28 @@
     return { ok: r.ok && j.ok, status: r.status, dados: j };
   }
 
+  /* ---------- serviços: os blocos abrem janelas com os serviços da Central ---------- */
+  d.querySelectorAll("[data-grupo]").forEach(function (el) {
+    var g = el.getAttribute("data-grupo"), dl = $("dlg-" + g);
+    if (!dl) return;
+    function abrirGrupo(e) {
+      if (e.type === "keydown" && e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault(); evento("abre_servico_" + g);
+      if (typeof dl.showModal === "function") dl.showModal(); else location.hash = "#contato";
+    }
+    el.addEventListener("click", abrirGrupo); el.addEventListener("keydown", abrirGrupo);
+  });
+  d.querySelectorAll(".dlg-serv").forEach(function (dl) {
+    dl.querySelectorAll("[data-fechar]").forEach(function (b) { b.addEventListener("click", function () { dl.close(); }); });
+    dl.addEventListener("click", function (e) { if (e.target === dl) dl.close(); });
+  });
   /* ---------- diagnóstico (janela na página inicial) ---------- */
   var dlg = $("dlg-diag");
   if (dlg) {
     var f = $("f-diag"), okbox = $("ok-diag"), erro = $("erro-diag"), btn = $("env-diag");
     var abrir = function () {
       evento("clique_diagnostico");
+      d.querySelectorAll(".dlg-serv[open]").forEach(function (x) { x.close(); });
       if (typeof dlg.showModal === "function") { dlg.showModal(); }
       else { location.href = wa("Olá, Bruno! Quero pedir o diagnóstico de Instagram e site."); }
     };
