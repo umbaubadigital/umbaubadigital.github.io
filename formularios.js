@@ -72,7 +72,24 @@
     var codigo = "", estado = null;
     var sLogin = $("s-login"), sArea = $("s-area");
     var erroLogin = $("erro-login"), btnLogin = $("env-login");
-    var fc = $("f-cliente"), errc = $("erro-cliente"), okc = $("ok-cliente"), btc = $("env-cliente");
+    var fc = $("f-cliente"), errc = $("erro-cliente"), okc = $("ok-ped"), btc = $("env-cliente");
+    var ABAS = ["ped", "arq", "novo"];
+    function ir(aba, foco) {
+      ABAS.forEach(function (a) {
+        var t = $("t-" + a), p = $("p-" + a), sel = a === aba;
+        t.setAttribute("aria-selected", sel ? "true" : "false"); t.tabIndex = sel ? 0 : -1; p.hidden = !sel;
+        if (sel && foco) t.focus();
+      });
+    }
+    ABAS.forEach(function (a, i) {
+      var t = $("t-" + a);
+      t.addEventListener("click", function () { if (a !== "ped") okc.hidden = true; ir(a); });
+      t.addEventListener("keydown", function (e) {
+        var k = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (k) { e.preventDefault(); ir(ABAS[(i + k + ABAS.length) % ABAS.length], true); }
+      });
+    });
+    function contador(id, n) { var c = $(id); c.textContent = n; c.hidden = !n; }
     var CLASSE = { "Recebido": "st-recebido", "Em produção": "st-producao", "Entregue": "st-entregue" };
 
     function dataBR(iso) { try { return new Date(iso).toLocaleDateString("pt-BR"); } catch (e) { return ""; } }
@@ -80,6 +97,8 @@
 
     function desenhar(dados) {
       $("nome-cliente").textContent = dados.cliente || "";
+      contador("cont-ped", (dados.pedidos || []).length);
+      contador("cont-arq", (dados.arquivos || []).length);
       var ul = $("lista-ped"); ul.innerHTML = "";
       $("ped-vazio").hidden = !!(dados.pedidos && dados.pedidos.length);
       (dados.pedidos || []).forEach(function (p) {
@@ -114,6 +133,7 @@
         estado = r.dados;
         desenhar(estado);
         sLogin.hidden = true; sArea.hidden = false;
+        ir("ped");
         return true;
       } catch (r) {
         if (!silencioso) {
@@ -157,7 +177,7 @@
       try {
         var r = await enviar("/pedido", dados);
         if (!r.ok) throw r;
-        okc.textContent = "Pedido enviado. Número: " + (r.dados.protocolo || "") + ". Ele já aparece na lista acima.";
+        okc.textContent = "Pedido enviado. Número: " + (r.dados.protocolo || "") + ". Você acompanha o andamento aqui.";
         okc.hidden = false;
         // o KV pode levar até 1 minuto para listar o pedido novo: mostramos já, sem buscar de novo
         if (estado) {
@@ -166,6 +186,7 @@
           desenhar(estado);
         }
         fc.reset();
+        ir("ped");
       } catch (r) {
         var msg = "Não conseguimos enviar agora. Tente de novo em instantes ou chame o Bruno no WhatsApp.";
         if (r && r.status === 403) msg = "Seu código não foi reconhecido. Saia e entre de novo.";

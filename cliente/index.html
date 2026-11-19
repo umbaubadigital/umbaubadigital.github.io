@@ -340,20 +340,24 @@ details p{padding:0 44px 18px 0;color:var(--suave)}
     <div class="topo-area"><div><span class="etiqueta">Área do cliente</span><h1 style="margin-top:12px">Olá, <em id="nome-cliente"></em></h1></div>
       <button type="button" class="sair" id="sair">Sair</button></div>
 
-    <div class="bloco-a">
-      <h2>Meus arquivos</h2>
+    <div class="tabs" role="tablist" aria-label="Seções da área do cliente">
+      <button type="button" class="tabbtn" role="tab" id="t-ped" aria-controls="p-ped" aria-selected="true" data-aba="ped">Pedidos <span class="cont" id="cont-ped" hidden></span></button>
+      <button type="button" class="tabbtn" role="tab" id="t-arq" aria-controls="p-arq" aria-selected="false" tabindex="-1" data-aba="arq">Arquivos <span class="cont" id="cont-arq" hidden></span></button>
+      <button type="button" class="tabbtn" role="tab" id="t-novo" aria-controls="p-novo" aria-selected="false" tabindex="-1" data-aba="novo">Novo pedido</button>
+    </div>
+
+    <div class="painel" id="p-ped" role="tabpanel" aria-labelledby="t-ped">
+      <p class="ok-linha" id="ok-ped" role="status" hidden></p>
+      <p class="vazio" id="ped-vazio" hidden>Você ainda não enviou nenhum pedido. Use a aba "Novo pedido".</p>
+      <ul class="peds" id="lista-ped"></ul>
+    </div>
+
+    <div class="painel" id="p-arq" role="tabpanel" aria-labelledby="t-arq" hidden>
       <p class="vazio" id="arq-vazio" hidden>Ainda não há arquivos aqui. Quando a sua marca estiver pronta, os links aparecem nesta lista.</p>
       <ul class="arqs" id="lista-arq"></ul>
     </div>
 
-    <div class="bloco-a">
-      <h2>Meus pedidos</h2>
-      <p class="vazio" id="ped-vazio" hidden>Você ainda não enviou nenhum pedido.</p>
-      <ul class="peds" id="lista-ped"></ul>
-    </div>
-
-    <div class="bloco-a">
-      <h2>Novo pedido</h2>
+    <div class="painel" id="p-novo" role="tabpanel" aria-labelledby="t-novo" hidden>
       <form id="f-cliente" novalidate class="formg">
         <div class="campo"><label for="c-tipo">Tipo de pedido</label><select id="c-tipo" name="tipo" required><option value="">Escolha</option><option>Post ou carrossel</option><option>Reel</option><option>Story</option><option>Ajuste em peça já feita</option><option>Material (logo, foto, arquivo)</option><option>Dúvida</option><option>Outro</option></select></div>
         <div class="campo"><label for="c-desc">O que você precisa</label><textarea id="c-desc" name="descricao" required maxlength="3000" placeholder="Conte o que quer, para qual rede e qualquer detalhe que ajude."></textarea></div>
@@ -363,7 +367,6 @@ details p{padding:0 44px 18px 0;color:var(--suave)}
         </div>
         <input class="hp" name="empresa_site" tabindex="-1" autocomplete="off" aria-hidden="true">
         <p class="erro" id="erro-cliente" role="alert" hidden></p>
-        <p class="ok-linha" id="ok-cliente" role="status" hidden></p>
         <button class="pill pill-escura" id="env-cliente" type="submit" style="justify-self:start">Enviar pedido<span class="seta"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button>
         <p class="fnota">Os dados enviados aqui servem só para atender o seu pedido e ficam guardados por até 180 dias.</p>
       </form>

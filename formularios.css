@@ -65,3 +65,18 @@ button.pill.pill-linha-escura:hover{background:rgba(3,29,28,.06)}
 .st-producao{background:var(--tronco);color:var(--creme)}
 .st-entregue{background:var(--folha);color:var(--creme)}
 .ok-linha{background:rgba(40,54,27,.1);border-radius:14px;padding:12px 16px;font-size:.92rem}
+
+/* abas da área do cliente */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:5px;border-radius:999px;background:var(--branco);scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabbtn{flex:1 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border:0;border-radius:999px;background:transparent;color:var(--folhagem);font:500 .92rem var(--sans);padding:0 20px;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+.tabbtn:hover{background:rgba(3,29,28,.07)}
+.tabbtn[aria-selected=true]{background:var(--folhagem);color:var(--branco)}
+.cont{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:999px;background:var(--tronco);color:var(--creme);font-size:.74rem;font-weight:600;padding:0 6px}
+.tabbtn[aria-selected=true] .cont{background:var(--palha);color:var(--folhagem)}
+.painel{display:grid;gap:12px}
+.painel[hidden]{display:none}
+.bloco-a{border-top:0;padding-top:0}
+
+
+@media (max-width:480px){.tabs{gap:2px}.tabbtn{padding:0 10px;font-size:.85rem;gap:6px}}
