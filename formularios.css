@@ -80,3 +80,53 @@ button.pill.pill-linha-escura:hover{background:rgba(3,29,28,.06)}
 
 
 @media (max-width:480px){.tabs{gap:2px}.tabbtn{padding:0 10px;font-size:.85rem;gap:6px}}
+
+/* área do cliente: menu lateral, lista de pedidos com andamento à direita e pacote do mês */
+.fcard-larga{max-width:1000px}
+.area{display:grid;grid-template-columns:1fr;gap:20px;align-items:start}
+.conteudo{min-width:0}
+.painel{display:grid;gap:16px}
+.peds li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;align-items:center}
+.ped-esq{display:grid;gap:4px;min-width:0}
+.ped-esq b{font-size:1.02rem;line-height:1.3}
+.ped-modelo{font-size:.84rem;color:var(--tronco);font-weight:500}
+.ped-esq details summary{cursor:pointer;font-size:.84rem;color:var(--suave);width:max-content}
+.ped-esq details p{margin-top:6px}
+.ped-status{align-self:center;justify-self:end}
+.uso{background:var(--papel);border:1px solid var(--linha);border-radius:16px;padding:16px 18px;display:grid;gap:10px}
+.uso h3{font-size:1.15rem}
+.uso-linha{display:flex;justify-content:space-between;gap:12px;font-size:.92rem}
+.uso-linha b{font-variant-numeric:tabular-nums}
+.barra{height:8px;border-radius:999px;background:var(--branco);overflow:hidden}
+.barra i{display:block;height:100%;background:var(--folhagem);border-radius:999px}
+.barra i.estourou{background:#9c3b2b}
+.modelos{display:flex;flex-wrap:wrap;gap:8px}
+.modelos span{border:1px solid var(--linha);border-radius:999px;padding:5px 14px;font-size:.8rem;background:var(--creme)}
+.duas-q{grid-template-columns:1fr 150px}
+@media (max-width:560px){.duas-q{grid-template-columns:1fr 110px}}
+@media (min-width:820px){
+  .area{grid-template-columns:230px minmax(0,1fr);gap:32px}
+  .lateral .tabs{flex-direction:column;overflow:visible;border-radius:22px;padding:8px;gap:4px;position:sticky;top:16px}
+  .lateral .tabbtn{width:100%;justify-content:space-between;border-radius:14px;min-height:50px;padding:0 18px;font-size:.96rem}
+}
+/* o site tem estilo próprio para details/summary (perguntas frequentes): aqui voltamos ao padrão */
+.ped-esq details,.ped-esq summary{all:revert}
+.ped-esq summary{cursor:pointer;font-size:.84rem;color:var(--suave);width:max-content;list-style:none}
+.ped-esq summary::-webkit-details-marker{display:none}
+.ped-esq summary::before{content:"+ ";font-weight:600}
+.ped-esq details[open] summary::before{content:"− "}
+.ped-esq summary::after{content:none!important;display:none!important}
+.ped-esq details p{margin-top:6px}
+/* catálogo de serviços (vem da Central, sem preços) */
+.catalogo{margin-top:clamp(40px,6vw,72px);display:grid;gap:22px}
+.cat-grade{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.cat{background:var(--papel);border:1px solid var(--linha);border-radius:var(--r-md);padding:clamp(20px,3vw,30px);display:grid;gap:14px;align-content:start}
+.cat h3{font-size:1.5rem}
+.cat-lista{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+.cat-lista li{border-top:1px solid var(--linha);padding-top:14px;display:grid;gap:6px}
+.cat-nome{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.cat-nome b{font-weight:600;line-height:1.35}
+.cat-tag{flex:none;font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;background:var(--branco);color:var(--tronco);padding:4px 12px}
+.cat-lista p{font-size:.92rem;color:var(--suave);line-height:1.55}
+.cat-acao{display:flex;flex-wrap:wrap;gap:12px}
+@media (max-width:760px){.cat-grade{grid-template-columns:1fr}}
