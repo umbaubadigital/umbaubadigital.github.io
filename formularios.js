@@ -67,36 +67,104 @@
   }
 
   /* ---------- área do cliente (página /cliente/) ---------- */
-  var fc = $("f-cliente");
-  if (fc) {
-    var okc = $("ok-cliente"), errc = $("erro-cliente"), btc = $("env-cliente");
-    try { var salvo = localStorage.getItem("ub-codigo"); if (salvo) fc.elements.codigo.value = salvo; } catch (e) {}
+  var fl = $("f-login");
+  if (fl) {
+    var codigo = "";
+    var sLogin = $("s-login"), sArea = $("s-area");
+    var erroLogin = $("erro-login"), btnLogin = $("env-login");
+    var fc = $("f-cliente"), errc = $("erro-cliente"), okc = $("ok-cliente"), btc = $("env-cliente");
+    var CLASSE = { "Recebido": "st-recebido", "Em produção": "st-producao", "Entregue": "st-entregue" };
+
+    function dataBR(iso) { try { return new Date(iso).toLocaleDateString("pt-BR"); } catch (e) { return ""; } }
+    function prazoBR(p) { if (!p) return ""; var x = String(p).split("-"); return x.length === 3 ? x[2] + "/" + x[1] + "/" + x[0] : p; }
+
+    function desenhar(dados) {
+      $("nome-cliente").textContent = dados.cliente || "";
+      var ul = $("lista-ped"); ul.innerHTML = "";
+      $("ped-vazio").hidden = !!(dados.pedidos && dados.pedidos.length);
+      (dados.pedidos || []).forEach(function (p) {
+        var li = d.createElement("li");
+        var topo = d.createElement("div"); topo.className = "ped-topo";
+        var t = d.createElement("b"); t.textContent = p.tipo;
+        var chip = d.createElement("span"); chip.className = "chip " + (CLASSE[p.status] || "st-recebido"); chip.textContent = p.status || "Recebido";
+        topo.appendChild(t); topo.appendChild(chip);
+        var desc = d.createElement("p"); desc.className = "ped-desc"; desc.textContent = p.descricao;
+        var meta = d.createElement("small"); meta.className = "ped-meta";
+        meta.textContent = "Enviado em " + dataBR(p.recebidoEm) + (p.prazo ? " · para " + prazoBR(p.prazo) : "") + " · " + p.protocolo;
+        li.appendChild(topo); li.appendChild(desc); li.appendChild(meta);
+        ul.appendChild(li);
+      });
+      var la = $("lista-arq"); la.innerHTML = "";
+      $("arq-vazio").hidden = !!(dados.arquivos && dados.arquivos.length);
+      (dados.arquivos || []).forEach(function (a) {
+        var li = d.createElement("li");
+        var link = d.createElement("a"); link.href = a.url; link.target = "_blank"; link.rel = "noopener noreferrer"; link.textContent = a.nome;
+        li.appendChild(link); la.appendChild(li);
+      });
+    }
+
+    async function entrar(cod, silencioso) {
+      erroLogin.hidden = true;
+      if (!silencioso) { btnLogin.disabled = true; btnLogin.firstChild.textContent = "Entrando… "; }
+      try {
+        var r = await enviar("/meu", { codigo: cod });
+        if (!r.ok) throw r;
+        codigo = cod;
+        try { localStorage.setItem("ub-codigo", cod); } catch (e) {}
+        desenhar(r.dados);
+        sLogin.hidden = true; sArea.hidden = false;
+        return true;
+      } catch (r) {
+        if (!silencioso) {
+          var msg = "Não conseguimos entrar agora. Tente de novo em instantes ou chame o Bruno no WhatsApp.";
+          if (r && r.status === 403) msg = "Código não reconhecido. Confira o código que a Umbaúba te passou.";
+          if (r && r.status === 429) msg = "Muitas tentativas. Aguarde um minuto e tente de novo.";
+          erroLogin.textContent = msg; erroLogin.hidden = false;
+        } else { try { localStorage.removeItem("ub-codigo"); } catch (e) {} }
+        return false;
+      } finally {
+        btnLogin.disabled = false; btnLogin.firstChild.textContent = "Entrar ";
+      }
+    }
+
+    fl.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var cod = valor(fl, "codigo");
+      marcar(fl.elements.codigo, !cod);
+      if (!cod) { erroLogin.textContent = "Digite o seu código."; erroLogin.hidden = false; return; }
+      entrar(cod, false);
+    });
+    $("sair").addEventListener("click", function () {
+      try { localStorage.removeItem("ub-codigo"); } catch (e) {}
+      codigo = ""; sArea.hidden = true; sLogin.hidden = false; fl.reset();
+    });
+    try { var salvo = localStorage.getItem("ub-codigo"); if (salvo) entrar(salvo, true); } catch (e) {}
+
     fc.addEventListener("submit", async function (e) {
       e.preventDefault();
-      errc.hidden = true;
+      errc.hidden = true; okc.hidden = true;
       var dados = {
-        codigo: valor(fc, "codigo"), quem: valor(fc, "quem"), tipo: valor(fc, "tipo"), descricao: valor(fc, "descricao"),
+        codigo: codigo, tipo: valor(fc, "tipo"), descricao: valor(fc, "descricao"),
         prazo: valor(fc, "prazo"), link: valor(fc, "link"), empresa_site: valor(fc, "empresa_site")
       };
       var ruim = [];
-      if (!dados.codigo) ruim.push("codigo");
       if (!dados.tipo) ruim.push("tipo");
       if (dados.descricao.length < 5) ruim.push("descricao");
-      ["codigo", "tipo", "descricao"].forEach(function (n) { marcar(fc.elements[n], ruim.indexOf(n) >= 0); });
-      if (ruim.length) { errc.textContent = "Preencha o código, o tipo de pedido e a descrição."; errc.hidden = false; return; }
+      ["tipo", "descricao"].forEach(function (n) { marcar(fc.elements[n], ruim.indexOf(n) >= 0); });
+      if (ruim.length) { errc.textContent = "Escolha o tipo de pedido e descreva o que você precisa."; errc.hidden = false; return; }
       btc.disabled = true; btc.firstChild.textContent = "Enviando… ";
       try {
         var r = await enviar("/pedido", dados);
         if (!r.ok) throw r;
-        try { localStorage.setItem("ub-codigo", dados.codigo); } catch (e) {}
-        $("prot-cliente").textContent = r.dados.protocolo || "";
-        $("nome-cliente").textContent = r.dados.cliente || "";
-        fc.hidden = true; okc.hidden = false;
+        okc.textContent = "Pedido enviado. Número: " + (r.dados.protocolo || "") + ". Ele já aparece na lista acima.";
+        okc.hidden = false; fc.reset();
+        entrar(codigo, true).then(function () { /* atualiza a lista */ });
       } catch (r) {
         var msg = "Não conseguimos enviar agora. Tente de novo em instantes ou chame o Bruno no WhatsApp.";
-        if (r && r.status === 403) msg = "Código não reconhecido. Confira o código que a Umbaúba te passou.";
+        if (r && r.status === 403) msg = "Seu código não foi reconhecido. Saia e entre de novo.";
         if (r && r.status === 429) msg = "Você acabou de enviar um pedido. Aguarde um minuto para enviar outro.";
         errc.textContent = msg; errc.hidden = false;
+      } finally {
         btc.disabled = false; btc.firstChild.textContent = "Enviar pedido ";
       }
     });

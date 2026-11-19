@@ -324,32 +324,51 @@ details p{padding:0 44px 18px 0;color:var(--suave)}
 </head><body class="fpagina">
 <div class="ftopo"><a href="../" aria-label="Umbaúba Digital, início"><img src="../marca/horizontal/umbauba-horizontal-negativa.svg" alt="Umbaúba" width="132" height="37"></a><a class="voltar" href="../">Voltar ao site</a></div>
 <main><div class="fcard">
-  <form id="f-cliente" novalidate class="formg">
+  <section id="s-login" class="formg">
     <span class="etiqueta" style="justify-self:start">Área do cliente</span>
-    <h1>Envie o seu <em>pedido</em></h1>
-    <p class="intro">Para quem já trabalha com a Umbaúba. Descreva o que precisa e o Bruno responde pelo WhatsApp. Você usa o código que recebeu na contratação.</p>
-    <div class="duas">
-      <div class="campo"><label for="c-cod">Seu código</label><input id="c-cod" name="codigo" autocomplete="off" required maxlength="40"></div>
-      <div class="campo"><label for="c-quem">Seu nome <small>opcional</small></label><input id="c-quem" name="quem" autocomplete="name" maxlength="80"></div>
+    <h1>Entre com o seu <em>código</em></h1>
+    <p class="intro">Para quem já trabalha com a Umbaúba. Use o código que recebeu na contratação para enviar pedidos, acompanhar o andamento e baixar os arquivos da sua marca.</p>
+    <form id="f-login" novalidate class="formg">
+      <div class="campo"><label for="c-cod">Seu código</label><input id="c-cod" name="codigo" autocomplete="off" autocapitalize="off" required maxlength="40"></div>
+      <p class="erro" id="erro-login" role="alert" hidden></p>
+      <button class="pill pill-escura" id="env-login" type="submit" style="justify-self:start">Entrar<span class="seta"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button>
+    </form>
+    <p class="fnota">Sem o código? Chame o Bruno no <a href="https://wa.me/5511960218383" target="_blank" rel="noopener">WhatsApp</a>. <a href="../privacidade/">Política de privacidade</a>.</p>
+  </section>
+
+  <section id="s-area" class="formg" hidden>
+    <div class="topo-area"><div><span class="etiqueta">Área do cliente</span><h1 style="margin-top:12px">Olá, <em id="nome-cliente"></em></h1></div>
+      <button type="button" class="sair" id="sair">Sair</button></div>
+
+    <div class="bloco-a">
+      <h2>Meus arquivos</h2>
+      <p class="vazio" id="arq-vazio" hidden>Ainda não há arquivos aqui. Quando a sua marca estiver pronta, os links aparecem nesta lista.</p>
+      <ul class="arqs" id="lista-arq"></ul>
     </div>
-    <div class="campo"><label for="c-tipo">Tipo de pedido</label><select id="c-tipo" name="tipo" required><option value="">Escolha</option><option>Post ou carrossel</option><option>Reel</option><option>Story</option><option>Ajuste em peça já feita</option><option>Material (logo, foto, arquivo)</option><option>Dúvida</option><option>Outro</option></select></div>
-    <div class="campo"><label for="c-desc">O que você precisa</label><textarea id="c-desc" name="descricao" required maxlength="3000" placeholder="Conte o que quer, para qual rede e qualquer detalhe que ajude."></textarea></div>
-    <div class="duas">
-      <div class="campo"><label for="c-prazo">Para quando <small>opcional</small></label><input id="c-prazo" name="prazo" type="date"></div>
-      <div class="campo"><label for="c-link">Link de apoio <small>opcional</small></label><input id="c-link" name="link" type="url" placeholder="Drive, referência, site" maxlength="300"></div>
+
+    <div class="bloco-a">
+      <h2>Meus pedidos</h2>
+      <p class="vazio" id="ped-vazio" hidden>Você ainda não enviou nenhum pedido.</p>
+      <ul class="peds" id="lista-ped"></ul>
     </div>
-    <input class="hp" name="empresa_site" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <p class="erro" id="erro-cliente" role="alert" hidden></p>
-    <button class="pill pill-escura" id="env-cliente" type="submit" style="justify-self:start">Enviar pedido<span class="seta"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button>
-    <p class="fnota">Os dados enviados aqui servem só para atender o seu pedido e ficam guardados por até 180 dias. <a href="../privacidade/">Política de privacidade</a>.</p>
-  </form>
-  <div class="okbox" id="ok-cliente" hidden>
-    <span class="etiqueta" style="justify-self:start">Recebido</span>
-    <h1>Pedido <em>enviado</em></h1>
-    <p class="intro">Obrigado, <span id="nome-cliente"></span>. O Bruno vai ver o seu pedido e responde pelo WhatsApp. Número do pedido:</p>
-    <p class="prot" id="prot-cliente"></p>
-    <div class="acoes-f"><a class="pill pill-escura" href="" onclick="location.reload();return false">Enviar outro pedido<span class="seta"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a></div>
-  </div>
+
+    <div class="bloco-a">
+      <h2>Novo pedido</h2>
+      <form id="f-cliente" novalidate class="formg">
+        <div class="campo"><label for="c-tipo">Tipo de pedido</label><select id="c-tipo" name="tipo" required><option value="">Escolha</option><option>Post ou carrossel</option><option>Reel</option><option>Story</option><option>Ajuste em peça já feita</option><option>Material (logo, foto, arquivo)</option><option>Dúvida</option><option>Outro</option></select></div>
+        <div class="campo"><label for="c-desc">O que você precisa</label><textarea id="c-desc" name="descricao" required maxlength="3000" placeholder="Conte o que quer, para qual rede e qualquer detalhe que ajude."></textarea></div>
+        <div class="duas">
+          <div class="campo"><label for="c-prazo">Para quando <small>opcional</small></label><input id="c-prazo" name="prazo" type="date"></div>
+          <div class="campo"><label for="c-link">Link de apoio <small>opcional</small></label><input id="c-link" name="link" type="url" placeholder="Drive, referência, site" maxlength="300"></div>
+        </div>
+        <input class="hp" name="empresa_site" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="erro" id="erro-cliente" role="alert" hidden></p>
+        <p class="ok-linha" id="ok-cliente" role="status" hidden></p>
+        <button class="pill pill-escura" id="env-cliente" type="submit" style="justify-self:start">Enviar pedido<span class="seta"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button>
+        <p class="fnota">Os dados enviados aqui servem só para atender o seu pedido e ficam guardados por até 180 dias.</p>
+      </form>
+    </div>
+  </section>
 </div></main>
 <script src="../formularios.js" defer></script>
 </body></html>
