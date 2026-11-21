@@ -100,23 +100,27 @@
     var AVULSO = { "Edição de Reel (vídeo gravado por você)": "A edição de Reels é um serviço avulso, por vídeo: o Bruno combina com você antes de começar." };
     var ORDEM = ["posts", "reels", "stories"];
 
-    /* abas (menu lateral no computador, abas no celular); "Novo pedido" é a primeira */
-    var ABAS = ["novo", "ped", "arq"];
+    /* menu da área (verde, em vidro): Início, Aprovações, Solicitações, Arquivos, Resultados. "Novo pedido" é uma tela dentro de Solicitações */
+    var ABAS = ["inicio", "apr", "ped", "novo", "arq", "res"], MENU = ["inicio", "apr", "ped", "arq", "res"], DONO = { novo: "ped" };
     function ir(aba, foco) {
-      ABAS.forEach(function (a) {
-        var t = $("t-" + a), p = $("p-" + a), sel = a === aba;
-        t.setAttribute("aria-selected", sel ? "true" : "false"); t.tabIndex = sel ? 0 : -1; p.hidden = !sel;
+      ABAS.forEach(function (a) { $("p-" + a).hidden = a !== aba; });
+      var ativo = DONO[aba] || aba;
+      MENU.forEach(function (m) {
+        var t = $("t-" + m), sel = m === ativo;
+        t.setAttribute("aria-selected", sel ? "true" : "false"); t.tabIndex = sel ? 0 : -1;
         if (sel && foco) t.focus();
       });
     }
-    ABAS.forEach(function (a, i) {
+    MENU.forEach(function (a, i) {
       var t = $("t-" + a);
       t.addEventListener("click", function () { if (a !== "ped") okc.hidden = true; ir(a); });
       t.addEventListener("keydown", function (e) {
         var k = (e.key === "ArrowRight" || e.key === "ArrowDown") ? 1 : (e.key === "ArrowLeft" || e.key === "ArrowUp") ? -1 : 0;
-        if (k) { e.preventDefault(); ir(ABAS[(i + k + ABAS.length) % ABAS.length], true); }
+        if (k) { e.preventDefault(); ir(MENU[(i + k + MENU.length) % MENU.length], true); }
       });
     });
+    $("nova-sol").addEventListener("click", function () { okc.hidden = true; ir("novo"); });
+    $("voltar-ped").addEventListener("click", function () { ir("ped"); });
     function contador(id, n) { var c = $(id); c.textContent = n; c.hidden = !n; }
 
     function chaveMes(data) { return new Date(data).toLocaleDateString("en-CA", { timeZone: TZ }).slice(0, 7); }
@@ -143,7 +147,7 @@
     function desenharUso(el) {
       el.innerHTML = "";
       var u = usoDoMes(), lim = limites();
-      var h = d.createElement("h3"); h.textContent = "Peças pedidas em " + nomeMes(); el.appendChild(h);
+      var h = d.createElement("h3"); h.textContent = "Peças do mês de " + nomeMes(); el.appendChild(h);
       if (lim.contrato) { var ct = d.createElement("p"); ct.className = "fnota"; ct.textContent = "Seu contrato: " + lim.contrato; el.appendChild(ct); }
       var temLimite = ORDEM.some(function (c) { return lim[c] > 0; });
       ORDEM.forEach(function (c) {
@@ -228,6 +232,48 @@
         var link = d.createElement("a"); link.href = a.url; link.target = "_blank"; link.rel = "noopener noreferrer"; link.textContent = a.nome;
         li.appendChild(link); la.appendChild(li);
       });
+      // aprovações do mês
+      var apr = dados.aprovacoes || [], pend = apr.filter(function (a) { return a.status !== "respondido"; });
+      contador("cont-apr", pend.length);
+      var lap = $("lista-apr"); lap.innerHTML = ""; $("apr-vazio").hidden = !!apr.length;
+      apr.forEach(function (a) {
+        var li = d.createElement("li"), esq = d.createElement("div"); esq.className = "ped-esq";
+        var t = d.createElement("b"); t.textContent = a.titulo;
+        var m = d.createElement("span"); m.className = "ped-modelo"; m.textContent = a.mes;
+        var meta = d.createElement("small"); meta.className = "ped-meta";
+        meta.textContent = a.status === "respondido" ? "Você respondeu em " + dataHoraBR(a.respondidoEm) + (a.situacao ? " · " + a.situacao : "") : "Aguardando a sua resposta";
+        esq.appendChild(t); esq.appendChild(m); esq.appendChild(meta);
+        var dir = d.createElement("div"); dir.className = "apr-dir";
+        var chip = d.createElement("span"); chip.className = "chip " + (a.status === "respondido" ? "st-entregue" : "st-recebido"); chip.textContent = a.status === "respondido" ? "Respondido" : "Para aprovar";
+        var ln = d.createElement("a"); ln.className = "btn-p"; ln.href = a.url; ln.target = "_blank"; ln.rel = "noopener noreferrer"; ln.textContent = a.status === "respondido" ? "Ver de novo" : "Abrir e aprovar";
+        dir.appendChild(chip); dir.appendChild(ln); li.appendChild(esq); li.appendChild(dir); lap.appendChild(li);
+      });
+      // resultados (relatórios de métricas)
+      var res = dados.resultados || [], lr = $("lista-res"); lr.innerHTML = ""; $("res-vazio").hidden = !!res.length;
+      res.forEach(function (r) {
+        var c = d.createElement("article"); c.className = "res-card";
+        var mm = d.createElement("span"); mm.className = "ped-modelo"; mm.textContent = r.mes;
+        var h = d.createElement("h3"); h.textContent = r.titulo; c.appendChild(mm); c.appendChild(h);
+        if ((r.resumo || []).length) {
+          var g = d.createElement("div"); g.className = "res-grade";
+          r.resumo.forEach(function (x) { var i = d.createElement("div"), v = d.createElement("b"), l = d.createElement("span"); v.textContent = x.valor; l.textContent = x.rotulo + (x.nota ? " · " + x.nota : ""); i.appendChild(v); i.appendChild(l); g.appendChild(i); });
+          c.appendChild(g);
+        }
+        if (r.url) { var a2 = d.createElement("a"); a2.className = "btn-p"; a2.href = r.url; a2.target = "_blank"; a2.rel = "noopener noreferrer"; a2.textContent = "Ver relatório completo"; c.appendChild(a2); }
+        lr.appendChild(c);
+      });
+      // início: três cartões e o pacote do mês
+      var ic = $("ini-cards"); ic.innerHTML = "";
+      var andamento = (dados.pedidos || []).filter(function (p) { return p.status !== "Entregue"; }).length;
+      function cartao(titulo, valor, texto, destino) {
+        var b = d.createElement("button"); b.type = "button"; b.className = "ini-card";
+        var s = d.createElement("span"); s.textContent = titulo; var v = d.createElement("b"); v.textContent = valor; var t = d.createElement("small"); t.textContent = texto;
+        b.appendChild(s); b.appendChild(v); b.appendChild(t); b.addEventListener("click", function () { ir(destino); }); ic.appendChild(b);
+      }
+      cartao("Para aprovar", String(pend.length), pend.length ? (pend.length === 1 ? "conteúdo esperando você" : "conteúdos esperando você") : "nada pendente", "apr");
+      cartao("Solicitações em andamento", String(andamento), andamento ? "a Umbaúba está cuidando" : "nenhuma por enquanto", "ped");
+      var ur = res[0]; cartao("Último resultado", ur ? ur.mes : "—", ur ? ur.titulo : "ainda sem relatório", "res");
+      desenharUso($("uso-inicio"));
       avisoPacote();
     }
 
@@ -253,7 +299,7 @@
       estado = r.dados;
       desenhar();
       sLogin.hidden = true; sArea.hidden = false;
-      ir("novo");
+      ir("inicio");
     }
     function escolher(lista, preferido) {
       var pref = lista.filter(function (c) { return c.id === preferido; })[0];
