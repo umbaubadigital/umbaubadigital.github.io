@@ -326,14 +326,28 @@ details p{padding:0 44px 18px 0;color:var(--suave)}
 <main><div class="fcard fcard-larga">
   <section id="s-login" class="formg">
     <span class="etiqueta" style="justify-self:start">Área do cliente</span>
-    <h1>Entre com o seu <em>código</em></h1>
-    <p class="intro">Para quem já trabalha com a Umbaúba. Use o código que recebeu na contratação para enviar pedidos, acompanhar o andamento e baixar os arquivos da sua marca.</p>
+    <h1 id="titulo-login">Entre com o seu <em>e-mail</em></h1>
+    <p class="intro" id="intro-login">Para quem já trabalha com a Umbaúba. Digite o e-mail que você cadastrou com a gente e enviamos um código de 6 dígitos para você entrar, enviar pedidos, acompanhar o andamento e baixar os arquivos da sua marca.</p>
     <form id="f-login" novalidate class="formg" style="max-width:460px">
-      <div class="campo"><label for="c-cod">Seu código</label><input id="c-cod" name="codigo" autocomplete="off" autocapitalize="off" required maxlength="40"></div>
+      <div class="campo"><label for="c-email">Seu e-mail</label><input id="c-email" name="email" type="email" autocomplete="email" autocapitalize="off" inputmode="email" required maxlength="120"></div>
       <p class="erro" id="erro-login" role="alert" hidden></p>
-      <button class="pill pill-escura" id="env-login" type="submit" style="justify-self:start">Entrar<span class="seta"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button>
+      <button class="pill pill-escura" id="env-login" type="submit" style="justify-self:start">Receber código<span class="seta"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button>
     </form>
-    <p class="fnota">Sem o código? Chame o Bruno no <a href="https://wa.me/5511960218383" target="_blank" rel="noopener">WhatsApp</a>. <a href="../privacidade/">Política de privacidade</a>.</p>
+    <form id="f-codigo" novalidate class="formg" style="max-width:460px" hidden>
+      <p class="ok-linha" id="aviso-codigo" role="status"></p>
+      <div class="campo"><label for="c-cod">Código de 6 dígitos</label><input id="c-cod" name="codigo" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" maxlength="6" required style="letter-spacing:.35em;font-size:1.4rem"></div>
+      <p class="erro" id="erro-codigo" role="alert" hidden></p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+        <button class="pill pill-escura" id="env-codigo" type="submit">Entrar<span class="seta"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button>
+        <button class="pill pill-linha-escura" id="reenviar" type="button">Enviar outro código</button>
+        <button class="sair" id="outro-email" type="button">Usar outro e-mail</button>
+      </div>
+    </form>
+    <div id="f-escolha" class="formg" style="max-width:460px" hidden>
+      <p>Este e-mail tem acesso a mais de uma empresa. Qual você quer abrir?</p>
+      <div id="lista-escolha" style="display:grid;gap:10px"></div>
+    </div>
+    <p class="fnota">O código vale por 10 minutos. Não recebeu ou o seu e-mail não funciona? Chame o Bruno no <a href="https://wa.me/5511960218383" target="_blank" rel="noopener">WhatsApp</a>. <a href="../privacidade/">Política de privacidade</a>.</p>
   </section>
 
   <section id="s-area" class="formg" hidden>

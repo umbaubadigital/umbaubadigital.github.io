@@ -85,7 +85,7 @@
   /* ---------- área do cliente (página /cliente/) ---------- */
   var fl = $("f-login");
   if (fl) {
-    var codigo = "", estado = null;
+    var sessao = "", clienteId = "", estado = null;
     var sLogin = $("s-login"), sArea = $("s-area");
     var erroLogin = $("erro-login"), btnLogin = $("env-login");
     var fc = $("f-cliente"), errc = $("erro-cliente"), okc = $("ok-ped"), btc = $("env-cliente");
@@ -229,50 +229,108 @@
       avisoPacote();
     }
 
-    async function entrar(cod, silencioso) {
-      erroLogin.hidden = true;
-      if (!silencioso) { btnLogin.disabled = true; btnLogin.firstChild.textContent = "Entrando… "; }
-      try {
-        var r = await enviar("/meu", { codigo: cod });
-        if (!r.ok) throw r;
-        codigo = cod;
-        try { localStorage.setItem("ub-codigo", cod); } catch (e) {}
-        estado = r.dados;
-        desenhar();
-        sLogin.hidden = true; sArea.hidden = false;
-        ir("novo");
-        return true;
-      } catch (r) {
-        if (!silencioso) {
-          var msg = "Não conseguimos entrar agora. Tente de novo em instantes ou chame o Bruno no WhatsApp.";
-          if (r && r.status === 403) msg = "Código não reconhecido. Confira o código que a Umbaúba te passou.";
-          if (r && r.status === 429) msg = "Muitas tentativas. Aguarde um minuto e tente de novo.";
-          erroLogin.textContent = msg; erroLogin.hidden = false;
-        } else { try { localStorage.removeItem("ub-codigo"); } catch (e) {} }
-        return false;
-      } finally {
-        btnLogin.disabled = false; btnLogin.firstChild.textContent = "Entrar ";
-      }
+    /* entrada por e-mail + código de 6 dígitos (o Worker confere e devolve uma sessão; nada de senha) */
+    var fCod = $("f-codigo"), fEsc = $("f-escolha"), erroCod = $("erro-codigo"), avisoCod = $("aviso-codigo");
+    var emailAtual = "";
+    function guardar(k, v) { try { if (v) localStorage.setItem(k, v); else localStorage.removeItem(k); } catch (e) {} }
+    function ler(k) { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } }
+    function etapa(qual) {
+      fl.hidden = qual !== "email"; fCod.hidden = qual !== "codigo"; fEsc.hidden = qual !== "escolha";
+      $("intro-login").hidden = qual !== "email";
+      $("titulo-login").innerHTML = qual === "email" ? "Entre com o seu <em>e-mail</em>" : qual === "codigo" ? "Digite o <em>código</em>" : "Qual <em>empresa</em> você quer abrir?";
+      var alvo = qual === "email" ? fl.elements.email : qual === "codigo" ? fCod.elements.codigo : null;
+      if (alvo) alvo.focus();
+    }
+    function ocupado(btn, on, txtOn, txtOff) { btn.disabled = on; btn.firstChild.textContent = on ? txtOn : txtOff; }
+    function mostrar(el, msg) { el.textContent = msg; el.hidden = false; }
+
+    async function abrirCliente(c) {
+      var r = await enviar("/portal/meu", { sessao: sessao, cliente: c.id });
+      if (!r.ok) throw r;
+      clienteId = c.id; guardar("ub-cliente", c.id);
+      estado = r.dados;
+      desenhar();
+      sLogin.hidden = true; sArea.hidden = false;
+      ir("novo");
+    }
+    function escolher(lista, preferido) {
+      var pref = lista.filter(function (c) { return c.id === preferido; })[0];
+      if (lista.length === 1 || pref) return abrirCliente(pref || lista[0]);
+      var box = $("lista-escolha"); box.textContent = "";
+      lista.forEach(function (c) {
+        var b = d.createElement("button"); b.type = "button"; b.className = "pill pill-linha-escura"; b.textContent = c.nome;
+        b.addEventListener("click", function () { abrirCliente(c).catch(function () { mostrar(erroLogin, "Não conseguimos abrir agora. Tente de novo."); etapa("email"); }); });
+        box.appendChild(b);
+      });
+      etapa("escolha");
+      return Promise.resolve();
+    }
+    async function pedirCodigo(email) {
+      var r = await enviar("/auth/pedir", { email: email });
+      if (!r.ok) throw r;
+      emailAtual = email;
+      mostrar(avisoCod, "Se este e-mail estiver cadastrado, enviamos um código para " + email + ". Pode levar um minuto. Olhe também o spam.");
     }
 
-    fl.addEventListener("submit", function (e) {
+    fl.addEventListener("submit", async function (e) {
       e.preventDefault();
-      var cod = valor(fl, "codigo");
-      marcar(fl.elements.codigo, !cod);
-      if (!cod) { erroLogin.textContent = "Digite o seu código."; erroLogin.hidden = false; return; }
-      entrar(cod, false);
+      erroLogin.hidden = true;
+      var email = valor(fl, "email").toLowerCase();
+      var bom = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+      marcar(fl.elements.email, !bom);
+      if (!bom) { mostrar(erroLogin, "Digite um e-mail válido."); return; }
+      ocupado(btnLogin, true, "Enviando… ", "Receber código ");
+      try { await pedirCodigo(email); fCod.reset(); erroCod.hidden = true; etapa("codigo"); }
+      catch (r) { mostrar(erroLogin, r && r.status === 429 ? "Muitas tentativas. Aguarde alguns minutos e tente de novo." : "Não conseguimos enviar agora. Tente de novo em instantes ou chame o Bruno no WhatsApp."); }
+      finally { ocupado(btnLogin, false, "", "Receber código "); }
     });
+    fCod.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      erroCod.hidden = true;
+      var cod = digitos(valor(fCod, "codigo")), btn = $("env-codigo");
+      marcar(fCod.elements.codigo, cod.length !== 6);
+      if (cod.length !== 6) { mostrar(erroCod, "Digite os 6 números do código."); return; }
+      ocupado(btn, true, "Entrando… ", "Entrar ");
+      try {
+        var r = await enviar("/auth/entrar", { email: emailAtual, codigo: cod });
+        if (!r.ok) throw r;
+        sessao = r.dados.sessao; guardar("ub-sessao", sessao);
+        await escolher(r.dados.clientes || [], "");
+      } catch (r) {
+        var msg = "Não conseguimos entrar agora. Tente de novo em instantes ou chame o Bruno no WhatsApp.";
+        if (r && r.status === 401) msg = "Código inválido ou vencido. Confira os números ou peça outro código.";
+        if (r && r.status === 403) msg = "Este e-mail não tem acesso à área do cliente. Chame o Bruno no WhatsApp.";
+        if (r && r.status === 429) msg = "Muitas tentativas. Aguarde um minuto e tente de novo.";
+        mostrar(erroCod, msg);
+      } finally { ocupado(btn, false, "", "Entrar "); }
+    });
+    $("reenviar").addEventListener("click", async function () {
+      var b = this; erroCod.hidden = true; b.disabled = true;
+      try { await pedirCodigo(emailAtual); } catch (r) { mostrar(erroCod, "Não conseguimos enviar agora. Aguarde um minuto e tente de novo."); }
+      setTimeout(function () { b.disabled = false; }, 20000);
+    });
+    $("outro-email").addEventListener("click", function () { etapa("email"); });
     $("sair").addEventListener("click", function () {
-      try { localStorage.removeItem("ub-codigo"); } catch (e) {}
-      codigo = ""; estado = null; sArea.hidden = true; sLogin.hidden = false; fl.reset();
+      if (sessao) enviar("/auth/sair", { sessao: sessao }).catch(function () {});
+      guardar("ub-sessao", ""); guardar("ub-cliente", ""); guardar("ub-codigo", "");
+      sessao = ""; clienteId = ""; estado = null; sArea.hidden = true; sLogin.hidden = false; fl.reset(); etapa("email");
     });
-    try { var salvo = localStorage.getItem("ub-codigo"); if (salvo) entrar(salvo, true); } catch (e) {}
-
+    // volta sozinho se a sessão ainda vale (30 dias); se não, mostra a entrada
+    guardar("ub-codigo", "");
+    (async function () {
+      var s = ler("ub-sessao"); if (!s) return;
+      try {
+        sessao = s;
+        var r = await enviar("/auth/eu", { sessao: s });
+        if (!r.ok) throw r;
+        await escolher(r.dados.clientes || [], ler("ub-cliente"));
+      } catch (e) { sessao = ""; guardar("ub-sessao", ""); guardar("ub-cliente", ""); }
+    })();
     fc.addEventListener("submit", async function (e) {
       e.preventDefault();
       errc.hidden = true; okc.hidden = true;
       var dados = {
-        codigo: codigo, tipo: valor(fc, "tipo"), quantidade: parseInt(valor(fc, "quantidade"), 10) || 1, resumo: valor(fc, "resumo"),
+        sessao: sessao, cliente: clienteId, tipo: valor(fc, "tipo"), quantidade: parseInt(valor(fc, "quantidade"), 10) || 1, resumo: valor(fc, "resumo"),
         descricao: valor(fc, "descricao"), prazo: valor(fc, "prazo"), link: valor(fc, "link"), empresa_site: valor(fc, "empresa_site")
       };
       var ruim = [];
@@ -296,7 +354,7 @@
         ir("ped");
       } catch (r) {
         var msg = "Não conseguimos enviar agora. Tente de novo em instantes ou chame o Bruno no WhatsApp.";
-        if (r && r.status === 403) msg = "Seu código não foi reconhecido. Saia e entre de novo.";
+        if (r && (r.status === 401 || r.status === 403)) msg = "Sua sessão expirou. Saia e entre de novo com o seu e-mail.";
         if (r && r.status === 429) msg = "Você acabou de enviar um pedido. Aguarde um minuto para enviar outro.";
         errc.textContent = msg; errc.hidden = false;
       } finally {
