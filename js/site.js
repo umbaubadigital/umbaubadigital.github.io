@@ -17,6 +17,15 @@
   mega.addEventListener('click',function(e){if(e.target.closest('a'))fechaMega()});
   document.addEventListener('click',function(e){if(!e.target.closest('#mega')&&!e.target.closest('#bt-serv'))fechaMega()});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){fechaMega();fechaGaveta()}});
+  /* painel de serviços: passar o mouse, focar ou tocar abre o descritivo; as setas do teclado trocam de serviço */
+  var abas=[].slice.call(mega.querySelectorAll('.mg-it')),paineis=[].slice.call(mega.querySelectorAll('.mg-p'));
+  function escolhe(k,foco){abas.forEach(function(a){var on=a.dataset.mg===k;a.setAttribute('aria-selected',on?'true':'false');a.tabIndex=on?0:-1;if(on&&foco)a.focus()});paineis.forEach(function(p){p.classList.toggle('on',p.id==='mg-p-'+k)})}
+  abas.forEach(function(a,i){
+    a.addEventListener('mouseenter',function(){escolhe(a.dataset.mg)});
+    a.addEventListener('focus',function(){escolhe(a.dataset.mg)});
+    a.addEventListener('click',function(){escolhe(a.dataset.mg)});
+    a.addEventListener('keydown',function(e){if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();escolhe(abas[(i+(e.key==='ArrowDown'?1:abas.length-1))%abas.length].dataset.mg,true)}});
+  });
   function rol(){topo.classList.toggle('solido',scrollY>40)}addEventListener('scroll',rol,{passive:true});rol();
   var q=new URLSearchParams(location.search);if(q.get('abrir')==='servicos'){bt.setAttribute('aria-expanded','true');mega.classList.add('on')}if(q.get('abrir')==='menu'){mb.setAttribute('aria-expanded','true');gv.classList.add('on')}
   /* animação de rolagem: as seções brotam */

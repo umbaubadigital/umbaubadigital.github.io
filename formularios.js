@@ -91,7 +91,7 @@
     var sLogin = $("s-login"), sArea = $("s-area");
     var erroLogin = $("erro-login"), btnLogin = $("env-login");
     var fc = $("f-cliente"), errc = $("erro-cliente"), okc = $("ok-ped"), btc = $("env-cliente");
-    var CLASSE = { "Recebido": "st-recebido", "Em produção": "st-producao", "Entregue": "st-entregue" };
+    var CLASSE = { "Recebido": "st-recebido", "Em produção": "st-producao", "Entregue": "st-entregue", "Orçamento enviado": "st-aguarda", "Aguardando você": "st-aguarda", "Orçamento aprovado": "st-producao", "Orçamento recusado": "st-recebido" };
     var TZ = "America/Sao_Paulo";
     // modelos que contam no pacote do mês (os outros tipos, como ajuste ou dúvida, não contam)
     var CAT = { "Post": "posts", "Carrossel": "posts", "Post ou carrossel": "posts", "Reel": "reels", "Story": "stories" };
@@ -221,6 +221,23 @@
           var tx = d.createElement("p"); tx.className = "ped-desc"; tx.textContent = p.descricao; det.appendChild(sm); det.appendChild(tx); esq.appendChild(det);
         }
         esq.appendChild(meta);
+        if (p.nota) { var nt = d.createElement("p"); nt.className = "ped-nota"; nt.textContent = "Recado da Umbaúba: " + p.nota; esq.appendChild(nt); }
+        if (p.status === "Orçamento enviado") {
+          var ac = d.createElement("div"); ac.className = "ped-acoes";
+          [["aprovar", "Aprovar orçamento", "btn-p"], ["recusar", "Recusar", "btn-s"]].forEach(function (x) {
+            var b = d.createElement("button"); b.type = "button"; b.className = x[2]; b.textContent = x[1];
+            b.addEventListener("click", async function () {
+              ac.querySelectorAll("button").forEach(function (o) { o.disabled = true; });
+              try {
+                var r = await enviar("/portal/decidir", { sessao: sessao, cliente: clienteId, protocolo: p.protocolo, decisao: x[0] });
+                if (!r.ok) throw r;
+                await abrirCliente({ id: clienteId }); ir("ped");
+              } catch (e) { ac.querySelectorAll("button").forEach(function (o) { o.disabled = false; }); mostrar(okc, "Não conseguimos registrar agora. Tente de novo em instantes."); }
+            });
+            ac.appendChild(b);
+          });
+          esq.appendChild(ac);
+        }
         var chip = d.createElement("span"); chip.className = "chip ped-status " + (CLASSE[p.status] || "st-recebido"); chip.textContent = p.status || "Recebido";
         li.appendChild(esq); li.appendChild(chip);
         ul.appendChild(li);

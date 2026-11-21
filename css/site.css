@@ -70,20 +70,6 @@ img{max-width:100%;height:auto;display:block}
   background:linear-gradient(160deg,rgba(14,52,46,.82),rgba(3,29,28,.78));-webkit-backdrop-filter:blur(30px) saturate(1.6);backdrop-filter:blur(30px) saturate(1.6);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 40px 80px -30px rgba(0,0,0,.7);color:var(--branco);
   opacity:0;visibility:hidden;transform:translateY(-10px) scale(.985);transform-origin:top center;transition:opacity .28s var(--ease),transform .32s var(--ease),visibility 0s .32s}
 .mega.on{opacity:1;visibility:visible;transform:none;transition:opacity .28s var(--ease),transform .32s var(--ease)}
-.mega .dest{border-radius:26px;padding:26px;display:flex;flex-direction:column;gap:12px;background:linear-gradient(150deg,rgba(237,228,214,.96),rgba(217,201,174,.9));color:var(--folhagem);text-decoration:none}
-.mega .dest small{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--tronco);font-weight:600}
-.mega .dest b{font:500 1.9rem/1.05 var(--serif)}
-.mega .dest p{font-size:.95rem;color:rgba(3,29,28,.78)}
-.mega .dest .btn{align-self:flex-start;margin-top:auto}
-.mega .lista{display:grid;gap:4px;align-content:start}
-.mega .it{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:22px;text-decoration:none;transition:background .2s,transform .25s var(--ease)}
-.mega .it:hover{background:rgba(255,255,255,.12);transform:translateX(3px)}
-.mega .it b{display:block;font-size:1rem;font-weight:600}
-.mega .it span{display:block;font-size:.86rem;color:rgba(237,228,214,.78);line-height:1.4}
-.mega .it i{margin-left:auto;flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.14)}
-.mega .it i svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8}
-.mega .mais{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 16px 0;margin-top:6px;border-top:1px solid rgba(255,255,255,.16);font-size:.84rem;color:rgba(237,228,214,.75)}
-.mega .mais a{text-decoration:none;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.12);color:var(--branco);font-weight:500}
 
 /* ---------- seções ---------- */
 .fundo{position:relative;isolation:isolate;overflow:hidden;color:var(--branco)}
@@ -414,7 +400,10 @@ a:hover>.mais-link svg,.mais-link:hover svg{transform:translateX(4px)}
 .ped-esq summary{cursor:pointer;font-size:.86rem;font-weight:600;color:var(--folha);padding:4px 0;font-family:var(--sans)}
 .ped-esq details{padding:0;background:none;border:0;box-shadow:none;border-radius:0}
 .chip{flex:none;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 13px;border-radius:999px}
-.st-recebido{background:#f4ecd8;color:#6b4f1a}.st-producao{background:#dfe9f5;color:#1f4a7a}.st-entregue{background:#dcefdc;color:#1f5a2a}
+.st-recebido{background:#f4ecd8;color:#6b4f1a}.st-producao{background:#dfe9f5;color:#1f4a7a}.st-entregue{background:#dcefdc;color:#1f5a2a}.st-aguarda{background:#f8e3d2;color:#8a3d12}
+.btn-s{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;background:transparent;color:#0d3b35;border:1px solid #0d3b35;border-radius:999px;padding:10px 18px;font:600 .9rem var(--sans);cursor:pointer}
+.btn-s:hover{background:rgba(13,59,53,.08)}
+.ped-nota{margin:.4rem 0 0;font-size:.9rem;color:#3b4a49}.ped-acoes{display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap}
 .arqs li a{display:flex;align-items:center;justify-content:space-between;gap:12px;text-decoration:none;font-weight:600;background:#fff;border-radius:22px;padding:18px 22px;box-shadow:0 10px 24px -18px rgba(3,29,28,.5)}
 .arqs li a::after{content:"↗";font-size:1.1rem}
 .arqs li a:hover{background:#fbf7ec}
@@ -521,3 +510,102 @@ a:hover>.mais-link svg,.mais-link:hover svg{transform:translateX(4px)}
 .bloq h3{font-size:1.5rem}
 .bloq p{color:var(--suave);max-width:56ch}
 .rot-b{font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--tronco)}
+
+/* ===== refino de escala (22/11/2026): textos e botões menores, aberturas compactas, menu em painel ===== */
+body{font-size:16px;line-height:1.6}
+.btn{min-height:46px;gap:12px;padding:5px 5px 5px 22px;font-size:.92rem}
+.btn .s{width:36px;height:36px}
+.btn .s svg{width:15px;height:15px}
+.btn-vidro,.btn-linha{padding:5px 22px}
+.btn-sm{min-height:40px;font-size:.86rem;padding:3px 3px 3px 18px}.btn-sm .s{width:32px;height:32px}
+.etiqueta{font-size:.7rem;padding:6px 14px;letter-spacing:.14em}
+.cab{gap:10px;margin-bottom:clamp(24px,3.4vw,38px)}
+.cab h2{font-size:clamp(1.65rem,2.8vw,2.3rem)}
+.cab p{font-size:1rem}
+.hero{padding:clamp(104px,12vw,132px) 0 clamp(48px,6vw,72px)}
+.hero h1{font-size:clamp(2rem,3.9vw,3.1rem)}
+.hero .lead{font-size:clamp(1rem,1.3vw,1.1rem)}
+.card h3{font-size:1.4rem}
+.card.destaque h3{font-size:clamp(1.6rem,2.6vw,2.1rem)}
+.card-l h3,.plano h3,.perfil h3{font-size:1.35rem}
+.destaque-l h3{font-size:clamp(1.5rem,2.4vw,1.9rem)}
+.mini h3,.etapa h3,.case h3,.exp h3{font-size:1.25rem}
+.item-s h3,.passo h3,.tres h3,.bloco h3{font-size:1.15rem}
+.h2-s{font-size:clamp(1.5rem,2.5vw,2rem)}
+.bruno h2,.bruno-mini h2,.historia h2{font-size:clamp(1.65rem,2.8vw,2.3rem)}
+.final h2{font-size:clamp(1.65rem,3vw,2.3rem)}
+.final p{font-size:1rem}
+.final .vidro{padding:clamp(24px,4vw,44px);border-radius:36px;gap:16px}
+.stat b{font-size:clamp(1.8rem,3vw,2.4rem)}
+.destaque-c h3{font-size:clamp(1.5rem,2.4vw,1.9rem)}
+.fisioo h3{font-size:clamp(1.4rem,2.2vw,1.8rem)}
+.faixa-cta p{font-size:clamp(1.1rem,1.9vw,1.4rem)}
+summary{font-size:1.05rem}
+.gaveta a{font-size:1.15rem;padding:14px 18px}
+.nav ul,.nav ul a,.nav ul button{font-size:.86rem}
+.nav .cli{font-size:.84rem;min-height:42px}
+.nav .acoes .btn-sm{min-height:42px}
+
+/* listas com título em negrito: o texto corre junto, sem virar duas colunas */
+.check li,.card li{display:block;position:relative;padding-left:18px}
+.check li::before,.card li::before{position:absolute;left:0;top:.62em;margin:0}
+.bloco .btn{margin-top:16px}
+
+/* abertura das páginas internas: faixa larga e baixa, com o título à esquerda e o texto ao lado */
+.ph{padding:clamp(100px,11vw,128px) 0 clamp(24px,3.4vw,40px)}
+.ph-in{max-width:none;border-radius:32px;padding:clamp(20px,2.8vw,32px) clamp(22px,3.4vw,44px);gap:10px clamp(24px,4vw,56px);justify-items:start;align-items:start;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"cr cr" "et ld" "h ld" "h ct"}
+.ph-in .crumbs{grid-area:cr;font-size:.8rem}
+.ph-in .etiqueta{grid-area:et}
+.ph-in h1{grid-area:h;font-size:clamp(1.8rem,3.3vw,2.7rem)}
+.ph-in .lead{grid-area:ld;font-size:clamp(.96rem,1.2vw,1.04rem);max-width:none;align-self:center;line-height:1.6}
+.ph-in .ctas{grid-area:ct;align-self:start}
+@media (max-width:900px){.ph-in{grid-template-columns:1fr;grid-template-areas:"cr" "et" "h" "ld" "ct"}.ph-in .lead{align-self:start}}
+
+/* rodapé: slogan e direitos em uma linha só, em texto pequeno */
+.rodape .linha{padding:22px 0 6px}
+.rodape-txt{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:0;padding:0 0 20px;font-size:.85rem;color:var(--suave)}
+.rodape-txt i{font:italic 400 1.05rem var(--serif);color:var(--folhagem)}
+.rodape-txt small{font-size:.8rem}
+
+/* menu de serviços: lista à esquerda, descritivo em cartão branco à direita */
+.mega{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:14px;padding:14px;border-radius:30px}
+.mg-lista{display:grid;gap:2px;align-content:start;padding:6px 4px}
+.mg-it{position:relative;display:grid;gap:1px;width:100%;text-align:left;padding:11px 16px 11px 20px;border:0;border-radius:16px;background:transparent;color:inherit;font:inherit;cursor:pointer;transition:background .2s}
+.mg-it b{font-size:.95rem;font-weight:600}
+.mg-it span{font-size:.8rem;color:rgba(237,228,214,.72);line-height:1.35}
+.mg-it::before{content:"";position:absolute;left:7px;top:50%;width:3px;height:18px;border-radius:3px;background:var(--palha);transform:translateY(-50%) scaleY(0);transition:transform .25s var(--ease)}
+.mg-it:hover{background:rgba(255,255,255,.08)}
+.mg-it[aria-selected="true"]{background:rgba(255,255,255,.14)}
+.mg-it[aria-selected="true"]::before{transform:translateY(-50%) scaleY(1)}
+.mg-todos{display:block;margin:8px 4px 0;padding:12px 16px 4px 20px;border-top:1px solid rgba(255,255,255,.14);font-size:.82rem;font-weight:500;color:rgba(237,228,214,.8);text-decoration:underline;text-underline-offset:3px}
+.mg-todos:hover{color:#fff}
+.mg-detalhe{background:#fff;color:var(--folhagem);border-radius:22px;padding:24px 26px;min-height:268px;box-shadow:0 18px 36px -22px rgba(0,0,0,.5)}
+.mg-p{display:none;gap:10px;align-content:start}
+.mg-p.on{display:grid;animation:mgin .28s var(--ease)}
+.mg-p small{font-size:.66rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--tronco)}
+.mg-p h3{font-size:1.45rem;line-height:1.1}
+.mg-p p{font-size:.9rem;line-height:1.55;color:var(--suave);max-width:46ch}
+.mg-p ul{list-style:none;margin:2px 0 0;padding:0;display:grid;gap:6px;font-size:.88rem}
+.mg-p li{position:relative;padding-left:17px}
+.mg-p li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--folha)}
+.mg-acoes{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:8px}
+.mg-link{font-size:.86rem;font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+@keyframes mgin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.bloco .check{margin-top:12px}
+.mg-p p{max-width:52ch}
+
+/* refino 2 (22/11/2026): Área do cliente e portfólio na mesma escala */
+.cli-fundo{padding:clamp(100px,11vw,128px) 0 clamp(36px,5vw,64px)}
+.cli-card{border-radius:34px;padding:clamp(22px,3vw,36px)}
+.cli-card:has(#s-login:not([hidden])){max-width:600px}
+.cli-card h1{font-size:clamp(1.7rem,3vw,2.3rem);margin:12px 0 10px}
+.cli-card .intro{font-size:.97rem;margin-bottom:18px}
+.cli-card .formd{max-width:none}
+.ini-card b{font-size:1.35rem}
+.tabbtn{font-size:.92rem;padding:12px 16px}
+.res-card h3,.bloq h3{font-size:1.2rem}
+.uso h3{font-size:1.1rem}
+.ped-esq b{font-size:1rem}
+.topo-area h1,.topo-area h2{font-size:clamp(1.5rem,2.4vw,1.9rem)}
+.destaque-c{padding:clamp(22px,3.4vw,34px)}
+.case,.exp,.stat{padding:22px}
