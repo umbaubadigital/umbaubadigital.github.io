@@ -34,7 +34,7 @@
   });
   /* ---------- diagnóstico (janela na página inicial) ---------- */
   var dlg = $("dlg-diag");
-  if (dlg) {
+  if ($("f-diag")) {
     var f = $("f-diag"), okbox = $("ok-diag"), erro = $("erro-diag"), btn = $("env-diag");
     var abrir = function () {
       evento("clique_diagnostico");
@@ -42,9 +42,11 @@
       if (typeof dlg.showModal === "function") { dlg.showModal(); }
       else { location.href = wa("Olá, Bruno! Quero pedir o diagnóstico de Instagram e site."); }
     };
-    d.querySelectorAll("[data-diag]").forEach(function (b) { b.addEventListener("click", abrir); });
-    dlg.querySelectorAll("[data-fechar]").forEach(function (b) { b.addEventListener("click", function () { dlg.close(); }); });
-    dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+    if (dlg) {
+      d.querySelectorAll("[data-diag]").forEach(function (b) { b.addEventListener("click", abrir); });
+      dlg.querySelectorAll("[data-fechar]").forEach(function (b) { b.addEventListener("click", function () { dlg.close(); }); });
+      dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+    }
 
     f.addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -258,7 +260,7 @@
       if (lista.length === 1 || pref) return abrirCliente(pref || lista[0]);
       var box = $("lista-escolha"); box.textContent = "";
       lista.forEach(function (c) {
-        var b = d.createElement("button"); b.type = "button"; b.className = "pill pill-linha-escura"; b.textContent = c.nome;
+        var b = d.createElement("button"); b.type = "button"; b.className = "btn btn-linha"; b.textContent = c.nome;
         b.addEventListener("click", function () { abrirCliente(c).catch(function () { mostrar(erroLogin, "Não conseguimos abrir agora. Tente de novo."); etapa("email"); }); });
         box.appendChild(b);
       });
