@@ -465,3 +465,13 @@ a:hover>.mais-link svg,.mais-link:hover svg{transform:translateX(4px)}
 .fisioo-txt .btn{justify-self:start;margin-top:6px}
 
 .cli-card.vidro-claro{background:linear-gradient(160deg,rgba(255,255,255,.94),rgba(251,248,242,.88))}
+
+/* ajustes do celular (conferência no site publicado) */
+.barra-movel{background:linear-gradient(160deg,rgba(14,52,46,.9),rgba(3,29,28,.86))}
+@media (max-width:760px){
+  .nav .acoes>.btn{display:none}
+  .nav{padding-right:8px}
+  .nav .acoes{margin-left:auto}
+  .cookies{bottom:88px;padding:12px 14px 14px;border-radius:24px;font-size:.8rem;gap:8px 12px}
+  .cookies button{min-height:40px;padding:0 16px;font-size:.82rem}
+}
