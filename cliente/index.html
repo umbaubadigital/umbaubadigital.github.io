@@ -113,13 +113,33 @@ try{if(localStorage.getItem('ub-consent')==='sim')gtag('consent','update',{analy
       <div class="area">
         <nav class="lateral" aria-label="Seções da área do cliente">
           <div class="tabs" role="tablist" aria-orientation="vertical">
-            <button type="button" class="tabbtn" role="tab" id="t-novo" aria-controls="p-novo" aria-selected="true" data-aba="novo">Novo pedido</button>
-            <button type="button" class="tabbtn" role="tab" id="t-ped" aria-controls="p-ped" aria-selected="false" tabindex="-1" data-aba="ped">Pedidos <span class="cont" id="cont-ped" hidden></span></button>
-            <button type="button" class="tabbtn" role="tab" id="t-arq" aria-controls="p-arq" aria-selected="false" tabindex="-1" data-aba="arq">Arquivos <span class="cont" id="cont-arq" hidden></span></button>
+            <button type="button" class="tabbtn" role="tab" id="t-inicio" aria-controls="p-inicio" aria-selected="true" data-aba="inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg><span class="rot-t">Início</span></button>
+            <button type="button" class="tabbtn" role="tab" id="t-apr" aria-controls="p-apr" aria-selected="false" tabindex="-1" data-aba="apr"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/></svg><span class="rot-t">Aprovações</span><span class="cont" id="cont-apr" hidden></span></button>
+            <button type="button" class="tabbtn" role="tab" id="t-ped" aria-controls="p-ped" aria-selected="false" tabindex="-1" data-aba="ped"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg><span class="rot-t">Solicitações</span><span class="cont" id="cont-ped" hidden></span></button>
+            <button type="button" class="tabbtn" role="tab" id="t-arq" aria-controls="p-arq" aria-selected="false" tabindex="-1" data-aba="arq"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="rot-t">Arquivos</span><span class="cont" id="cont-arq" hidden></span></button>
+            <button type="button" class="tabbtn" role="tab" id="t-res" aria-controls="p-res" aria-selected="false" tabindex="-1" data-aba="res"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span class="rot-t">Resultados</span></button>
           </div>
         </nav>
         <div class="conteudo">
-          <div class="painel" id="p-novo" role="tabpanel" aria-labelledby="t-novo">
+          <div class="painel" id="p-inicio" role="tabpanel" aria-labelledby="t-inicio">
+            <p class="vazio">Aqui fica o resumo do que está acontecendo com a sua marca.</p>
+            <div class="ini-cards" id="ini-cards"></div>
+            <div class="uso" id="uso-inicio"></div>
+          </div>
+          <div class="painel" id="p-apr" role="tabpanel" aria-labelledby="t-apr" hidden>
+            <p class="vazio">Conteúdos do mês esperando a sua aprovação. Nada vai ao ar sem a sua resposta.</p>
+            <p class="vazio" id="apr-vazio" hidden>Ainda não há conteúdo para aprovar. Quando o do mês estiver pronto, ele aparece aqui.</p>
+            <ul class="peds" id="lista-apr"></ul>
+          </div>
+          <div class="painel" id="p-ped" role="tabpanel" aria-labelledby="t-ped" hidden>
+            <div class="acoes-p"><button class="btn btn-escuro btn-sm" id="nova-sol" type="button">Nova solicitação<span class="s"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button></div>
+            <p class="ok-linha" id="ok-ped" role="status" hidden></p>
+            <div class="uso" id="uso-ped"></div>
+            <p class="vazio" id="ped-vazio" hidden>Você ainda não enviou nenhuma solicitação. Use o botão "Nova solicitação".</p>
+            <ul class="peds" id="lista-ped"></ul>
+          </div>
+          <div class="painel" id="p-novo" role="tabpanel" aria-labelledby="t-ped" hidden>
+            <div class="acoes-p"><button class="btn-t" id="voltar-ped" type="button">← Voltar às solicitações</button></div>
             <div class="uso" id="uso-novo"></div>
             <form id="f-cliente" novalidate class="formd">
               <div class="duas">
@@ -139,20 +159,18 @@ try{if(localStorage.getItem('ub-consent')==='sim')gtag('consent','update',{analy
               <p class="fnota">Os dados enviados aqui servem só para atender o seu pedido e ficam guardados por até 180 dias.</p>
             </form>
           </div>
-          <div class="painel" id="p-ped" role="tabpanel" aria-labelledby="t-ped" hidden>
-            <p class="ok-linha" id="ok-ped" role="status" hidden></p>
-            <div class="uso" id="uso-ped"></div>
-            <p class="vazio" id="ped-vazio" hidden>Você ainda não enviou nenhum pedido. Use a aba "Novo pedido".</p>
-            <ul class="peds" id="lista-ped"></ul>
-          </div>
           <div class="painel" id="p-arq" role="tabpanel" aria-labelledby="t-arq" hidden>
             <p class="vazio" id="arq-vazio" hidden>Ainda não há arquivos aqui. Quando a sua marca estiver pronta, os links aparecem nesta lista.</p>
             <ul class="arqs" id="lista-arq"></ul>
           </div>
+          <div class="painel" id="p-res" role="tabpanel" aria-labelledby="t-res" hidden>
+            <p class="vazio">Os números dos seus perfis, mês a mês, explicados de forma simples.</p>
+            <p class="vazio" id="res-vazio" hidden>Ainda não há relatório publicado. O primeiro aparece aqui depois do fechamento do mês.</p>
+            <div class="res-lista" id="lista-res"></div>
+          </div>
         </div>
       </div>
     </section>
-
   </div></div>
 </section>
 
@@ -162,7 +180,7 @@ try{if(localStorage.getItem('ub-consent')==='sim')gtag('consent','update',{analy
   <div class="in"><div class="linha">
     <a href="/" aria-label="Umbaúba Digital, início"><img src="/marca/horizontal/umbauba-horizontal-positiva.svg" alt="Umbaúba Digital" width="107" height="30"></a>
     <nav aria-label="Rodapé"><a href="/servicos/">Serviços</a><a href="/como-funciona/">Como funciona</a><a href="/para-quem/">Para quem</a><a href="/sobre/">Quem conduz</a><a href="/duvidas/">Dúvidas</a><a href="/portfolio/">Portfólio</a><a href="/contato/">Contato</a><a href="/cliente/">Área do cliente</a><a href="/privacidade/">Privacidade</a></nav>
-    <small>Umbaúba Digital · marca, conteúdo e estratégia comercial · © 2026</small>
+    <div class="rodape-marca"><p class="slogan">Marcas com raízes</p><small>© 2026 Umbaúba Digital</small></div>
   </div></div>
   <div class="azulejo" id="azulejo" aria-hidden="true"><svg id="padrao" viewBox="0 0 1280 128" preserveAspectRatio="xMidYMid slice" focusable="false"></svg></div>
 </footer>
