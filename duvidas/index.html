@@ -15,7 +15,7 @@
 <link rel="preload" as="image" href="/img/banner.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/site.css?v=96771af7">
+<link rel="stylesheet" href="/css/site.css?v=b3d51e07">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://umbaubadigital.com.br/"},{"@type":"ListItem","position":2,"name":"Dúvidas","item":"https://umbaubadigital.com.br/duvidas/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Preciso contratar as três frentes?","acceptedAnswer":{"@type":"Answer","text":"Não. Você pode começar pela marca ou pelo Instagram e incluir o atendimento comercial depois. O diagnóstico ajuda a escolher a ordem."}},{"@type":"Question","name":"Quanto custa?","acceptedAnswer":{"@type":"Answer","text":"Depende do escopo. Depois da conversa e do diagnóstico, você recebe uma proposta por escrito com os valores."}},{"@type":"Question","name":"Vocês garantem resultados?","acceptedAnswer":{"@type":"Answer","text":"Não garantimos números, porque eles dependem de fatores que ninguém controla sozinho. Garantimos um trabalho bem feito, explicado e aprovado por você."}},{"@type":"Question","name":"Como funciona a aprovação do conteúdo?","acceptedAnswer":{"@type":"Answer","text":"Você recebe uma página com os posts do mês, revisa e responde com aprovações ou ajustes. Nada vai ao ar sem a sua aprovação."}},{"@type":"Question","name":"Quem vai cuidar do meu projeto?","acceptedAnswer":{"@type":"Answer","text":"O Bruno coordena todos os projetos e é o seu contato direto do começo ao fim."}}]}]}</script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
 gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
@@ -52,12 +52,52 @@ try{if(localStorage.getItem('ub-consent')==='sim')gtag('consent','update',{analy
     </div>
   </nav>
   <div class="mega" id="mega" role="region" aria-label="Serviços">
-    <a class="dest" href="/servicos/diagnostico/"><small>Comece por aqui</small><b>Diagnóstico</b><p>A gente analisa o seu Instagram e o seu site e mostra o que ajustar primeiro, em ordem de prioridade.</p><span class="btn btn-escuro btn-sm">Conhecer o diagnóstico<span class="s"><svg><use href="#seta"/></svg></span></span></a>
-    <div class="lista">
-      <a class="it" href="/servicos/marca/"><span><b>Marca</b><span>Logo, cores, tipografia e guia de uso.</span></span><i><svg><use href="#seta"/></svg></i></a>
-      <a class="it" href="/servicos/instagram/"><span><b>Instagram e conteúdo</b><span>Posts do mês planejados e aprovados por você.</span></span><i><svg><use href="#seta"/></svg></i></a>
-      <a class="it" href="/servicos/atendimento-comercial/"><span><b>Atendimento comercial</b><span>Funil e CRM, do primeiro contato ao fechamento.</span></span><i><svg><use href="#seta"/></svg></i></a>
-      <div class="mais"><a href="/servicos/">Ver todos os serviços</a><a href="/servicos/#site">Site</a><a href="/servicos/#consultoria">Consultoria</a></div>
+    <div class="mg-lista" role="tablist" aria-label="Escolha um serviço" aria-orientation="vertical">
+      <button type="button" class="mg-it" role="tab" id="mg-t-diagnostico" aria-selected="true" aria-controls="mg-p-diagnostico" data-mg="diagnostico"><b>Diagnóstico</b><span>Por onde começar</span></button>
+      <button type="button" class="mg-it" role="tab" id="mg-t-marca" aria-selected="false" tabindex="-1" aria-controls="mg-p-marca" data-mg="marca"><b>Marca</b><span>Logo, cores e guia de uso</span></button>
+      <button type="button" class="mg-it" role="tab" id="mg-t-instagram" aria-selected="false" tabindex="-1" aria-controls="mg-p-instagram" data-mg="instagram"><b>Instagram e conteúdo</b><span>Posts do mês, com a sua aprovação</span></button>
+      <button type="button" class="mg-it" role="tab" id="mg-t-atendimento" aria-selected="false" tabindex="-1" aria-controls="mg-p-atendimento" data-mg="atendimento"><b>Atendimento comercial</b><span>Funil e CRM</span></button>
+      <button type="button" class="mg-it" role="tab" id="mg-t-site" aria-selected="false" tabindex="-1" aria-controls="mg-p-site" data-mg="site"><b>Site</b><span>Páginas que levam à conversa</span></button>
+      <button type="button" class="mg-it" role="tab" id="mg-t-consultoria" aria-selected="false" tabindex="-1" aria-controls="mg-p-consultoria" data-mg="consultoria"><b>Consultoria</b><span>Orientação por hora</span></button>
+      <a class="mg-todos" href="/servicos/">Ver todos os serviços</a>
+    </div>
+    <div class="mg-detalhe">
+      <section class="mg-p on" id="mg-p-diagnostico" role="tabpanel" aria-labelledby="mg-t-diagnostico">
+        <small>Comece por aqui</small><h3>Diagnóstico de Instagram e site</h3>
+        <p>Olhamos o seu Instagram e o seu site, comparamos com concorrentes e mostramos o que ajustar primeiro, em ordem de prioridade.</p>
+        <ul><li>Análise do perfil e do site</li><li>Comparação com concorrentes do setor</li><li>Ajustes por prioridade, em relatório por escrito</li></ul>
+        <div class="mg-acoes"><a class="btn btn-escuro btn-sm" href="/contato/#diagnostico">Pedir diagnóstico<span class="s"><svg><use href="#seta"/></svg></span></a><a class="mg-link" href="/servicos/diagnostico/">Ver a página do diagnóstico</a></div>
+      </section>
+      <section class="mg-p" id="mg-p-marca" role="tabpanel" aria-labelledby="mg-t-marca">
+        <small>Quem você é</small><h3>Identidade visual e marca</h3>
+        <p>Para quando o negócio ainda não tem uma cara, ou tem uma que não acompanha o valor do que você entrega.</p>
+        <ul><li>Identidade visual completa</li><li>Guia de marca, para quem já tem logo</li><li>Estratégia de posicionamento</li></ul>
+        <div class="mg-acoes"><a class="btn btn-escuro btn-sm" href="/contato/">Conversar sobre marca<span class="s"><svg><use href="#seta"/></svg></span></a><a class="mg-link" href="/servicos/marca/">Ver detalhes da marca</a></div>
+      </section>
+      <section class="mg-p" id="mg-p-instagram" role="tabpanel" aria-labelledby="mg-t-instagram">
+        <small>Como você aparece</small><h3>Instagram e conteúdo</h3>
+        <p>Planejamos o mês, escrevemos e produzimos as peças, e você aprova tudo antes de ir ao ar.</p>
+        <ul><li>Calendário do mês, carrosséis e posts</li><li>Reels e página de aprovação</li><li>Relatório mensal e Google Meu Negócio</li></ul>
+        <div class="mg-acoes"><a class="btn btn-escuro btn-sm" href="/contato/">Conversar sobre conteúdo<span class="s"><svg><use href="#seta"/></svg></span></a><a class="mg-link" href="/servicos/instagram/">Ver planos e entregas</a></div>
+      </section>
+      <section class="mg-p" id="mg-p-atendimento" role="tabpanel" aria-labelledby="mg-t-atendimento">
+        <small>Como você fecha</small><h3>Funil, CRM e atendimento</h3>
+        <p>Organizamos o caminho do primeiro contato ao fechamento e deixamos o atendimento acompanhado.</p>
+        <ul><li>Análise do funil</li><li>Mapa do caminho do cliente no CRM</li><li>Assistente de triagem do atendimento</li></ul>
+        <div class="mg-acoes"><a class="btn btn-escuro btn-sm" href="/contato/">Conversar sobre atendimento<span class="s"><svg><use href="#seta"/></svg></span></a><a class="mg-link" href="/servicos/atendimento-comercial/">Ver detalhes do atendimento</a></div>
+      </section>
+      <section class="mg-p" id="mg-p-site" role="tabpanel" aria-labelledby="mg-t-site">
+        <small>Também fazemos</small><h3>Site</h3>
+        <p>Páginas que explicam o seu negócio e levam a pessoa para a conversa. Domínio e hospedagem à parte.</p>
+        <ul><li>Site institucional, até 5 páginas</li><li>Landing page de conversão</li><li>Manutenção mensal</li></ul>
+        <div class="mg-acoes"><a class="btn btn-escuro btn-sm" href="/contato/">Conversar sobre site<span class="s"><svg><use href="#seta"/></svg></span></a><a class="mg-link" href="/servicos/#site">Ver detalhes do site</a></div>
+      </section>
+      <section class="mg-p" id="mg-p-consultoria" role="tabpanel" aria-labelledby="mg-t-consultoria">
+        <small>Também fazemos</small><h3>Consultoria por hora</h3>
+        <p>Orientação pontual sobre marca, conteúdo ou funil, em sessões combinadas com você.</p>
+        <ul><li>Sessão de orientação</li><li>Formato e valor combinados na conversa</li></ul>
+        <div class="mg-acoes"><a class="btn btn-escuro btn-sm" href="/contato/">Conversar sobre consultoria<span class="s"><svg><use href="#seta"/></svg></span></a><a class="mg-link" href="/servicos/#consultoria">Ver detalhes</a></div>
+      </section>
     </div>
   </div>
 </header>
@@ -108,15 +148,17 @@ try{if(localStorage.getItem('ub-consent')==='sim')gtag('consent','update',{analy
 </main>
 
 <footer class="rodape">
-  <div class="in"><div class="linha">
+  <div class="in">
+  <div class="linha">
     <a href="/" aria-label="Umbaúba Digital, início"><img src="/marca/horizontal/umbauba-horizontal-positiva.svg" alt="Umbaúba Digital" width="107" height="30"></a>
     <nav aria-label="Rodapé"><a href="/servicos/">Serviços</a><a href="/como-funciona/">Como funciona</a><a href="/para-quem/">Para quem</a><a href="/sobre/">Quem conduz</a><a href="/duvidas/">Dúvidas</a><a href="/portfolio/">Portfólio</a><a href="/contato/">Contato</a><a href="/cliente/">Área do cliente</a><a href="/privacidade/">Privacidade</a></nav>
-    <div class="rodape-marca"><p class="slogan">Marcas com raízes</p><small>© 2026 Umbaúba Digital</small></div>
-  </div></div>
+  </div>
+  <p class="rodape-txt"><i>Marcas com raízes</i><span aria-hidden="true">·</span><small>© 2026 Umbaúba Digital</small></p>
+  </div>
   <div class="azulejo" id="azulejo" aria-hidden="true"><svg id="padrao" viewBox="0 0 1280 128" preserveAspectRatio="xMidYMid slice" focusable="false"></svg></div>
 </footer>
 <!-- cookies -->
 <div class="cookies" id="cookies" role="dialog" aria-label="Aviso de cookies" hidden><p>Usamos cookies de estatística para entender como o site é visitado. Você escolhe. <a href="/privacidade/">Saiba mais</a></p><div class="bt"><button class="nao" id="ck-nao" type="button">Recusar</button><button class="sim" id="ck-sim" type="button">Aceitar</button></div></div>
-<script src="/js/site.js?v=96771af7" defer></script>
+<script src="/js/site.js?v=b3d51e07" defer></script>
 
 </body></html>
