@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /cliente/
-
-Sitemap: https://umbaubadigital.com.br/sitemap.xml
