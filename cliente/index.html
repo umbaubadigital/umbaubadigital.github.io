@@ -117,7 +117,7 @@ try{if(localStorage.getItem('ub-consent')==='sim')gtag('consent','update',{analy
             <button type="button" class="tabbtn" role="tab" id="t-apr" aria-controls="p-apr" aria-selected="false" tabindex="-1" data-aba="apr"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/></svg><span class="rot-t">Aprovações</span><span class="cont" id="cont-apr" hidden></span></button>
             <button type="button" class="tabbtn" role="tab" id="t-ped" aria-controls="p-ped" aria-selected="false" tabindex="-1" data-aba="ped"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg><span class="rot-t">Solicitações</span><span class="cont" id="cont-ped" hidden></span></button>
             <button type="button" class="tabbtn" role="tab" id="t-arq" aria-controls="p-arq" aria-selected="false" tabindex="-1" data-aba="arq"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="rot-t">Arquivos</span><span class="cont" id="cont-arq" hidden></span></button>
-            <button type="button" class="tabbtn" role="tab" id="t-res" aria-controls="p-res" aria-selected="false" tabindex="-1" data-aba="res"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span class="rot-t">Resultados</span></button>
+            <button type="button" class="tabbtn" role="tab" id="t-res" aria-controls="p-res" aria-selected="false" tabindex="-1" data-aba="res"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span class="rot-t">Resultados</span><svg class="cad" id="cad-res" viewBox="0 0 24 24" aria-hidden="true" hidden><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button>
           </div>
         </nav>
         <div class="conteudo">
@@ -164,9 +164,17 @@ try{if(localStorage.getItem('ub-consent')==='sim')gtag('consent','update',{analy
             <ul class="arqs" id="lista-arq"></ul>
           </div>
           <div class="painel" id="p-res" role="tabpanel" aria-labelledby="t-res" hidden>
-            <p class="vazio">Os números dos seus perfis, mês a mês, explicados de forma simples.</p>
-            <p class="vazio" id="res-vazio" hidden>Ainda não há relatório publicado. O primeiro aparece aqui depois do fechamento do mês.</p>
-            <div class="res-lista" id="lista-res"></div>
+            <div id="res-conteudo">
+              <p class="vazio">Os números dos seus perfis, mês a mês, explicados de forma simples.</p>
+              <p class="vazio" id="res-vazio" hidden>Ainda não há relatório publicado. O primeiro aparece aqui depois do fechamento do mês.</p>
+              <div class="res-lista" id="lista-res"></div>
+            </div>
+            <div class="bloq" id="res-bloq" hidden>
+              <span class="rot-b">Relatório mensal de métricas</span>
+              <h3>Esse recurso não está no seu plano</h3>
+              <p>O relatório mostra, mês a mês, os números dos seus perfis explicados de forma simples. Ele faz parte dos planos de conteúdo <b>Padrão</b> e <b>Completo</b>, e também pode ser contratado à parte.</p>
+              <a class="btn btn-escuro btn-sm" href="https://wa.me/5511960218383?text=Ol%C3%A1%2C%20Bruno!%20Quero%20saber%20como%20incluir%20o%20relat%C3%B3rio%20mensal%20de%20m%C3%A9tricas." target="_blank" rel="noopener" data-ev="whatsapp">Falar com o Bruno<span class="s"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+            </div>
           </div>
         </div>
       </div>
