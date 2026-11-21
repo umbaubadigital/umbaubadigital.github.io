@@ -248,7 +248,9 @@
         var ln = d.createElement("a"); ln.className = "btn-p"; ln.href = a.url; ln.target = "_blank"; ln.rel = "noopener noreferrer"; ln.textContent = a.status === "respondido" ? "Ver de novo" : "Abrir e aprovar";
         dir.appendChild(chip); dir.appendChild(ln); li.appendChild(esq); li.appendChild(dir); lap.appendChild(li);
       });
-      // resultados (relatórios de métricas)
+      // resultados (relatórios de métricas): só para quem tem o recurso no plano; os outros veem o aviso
+      var lib = !!(dados.recursos && dados.recursos.resultados);
+      $("res-conteudo").hidden = !lib; $("res-bloq").hidden = lib; $("cad-res").toggleAttribute("hidden", lib);
       var res = dados.resultados || [], lr = $("lista-res"); lr.innerHTML = ""; $("res-vazio").hidden = !!res.length;
       res.forEach(function (r) {
         var c = d.createElement("article"); c.className = "res-card";
@@ -272,7 +274,7 @@
       }
       cartao("Para aprovar", String(pend.length), pend.length ? (pend.length === 1 ? "conteúdo esperando você" : "conteúdos esperando você") : "nada pendente", "apr");
       cartao("Solicitações em andamento", String(andamento), andamento ? "a Umbaúba está cuidando" : "nenhuma por enquanto", "ped");
-      var ur = res[0]; cartao("Último resultado", ur ? ur.mes : "—", ur ? ur.titulo : "ainda sem relatório", "res");
+      var ur = lib ? res[0] : null; cartao("Último resultado", ur ? ur.mes : "—", ur ? ur.titulo : (lib ? "ainda sem relatório" : "não incluso no seu plano"), "res");
       desenharUso($("uso-inicio"));
       avisoPacote();
     }
