@@ -1,11 +1,5 @@
 /* faixa de azulejo no fim da página: formas simples, na paleta da marca */
-(function(){
-  var svg=document.getElementById('padrao'),S=64,BG=['#f6f0e7','#ede4d6','#d9c9ae','#f6f0e7'],FG=['#28361b','#533c27','#031d1c','#d9c9ae','#28361b'],s=41,h='';
-  var F=[function(c){return '<path d="M0 0H64A64 64 0 0 1 0 64Z" fill="'+c+'"/>'},function(c){return '<path d="M0 64A32 32 0 0 1 64 64Z" fill="'+c+'"/>'},function(c){return '<path d="M0 0H64V64Z" fill="'+c+'"/>'},function(c){return '<circle cx="32" cy="32" r="21" fill="'+c+'"/>'},function(c){return '<path d="M0 0H32A32 32 0 0 1 0 32Z M64 64H32A32 32 0 0 1 64 32Z" fill="'+c+'"/>'}];
-  function r(){s=(s*1664525+1013904223)%4294967296;return s/4294967296}
-  for(var y=0;y<2;y++)for(var x=0;x<20;x++){var bg=BG[Math.floor(r()*BG.length)],fg=FG[Math.floor(r()*FG.length)];if(fg===bg)fg='#28361b';
-    h+='<g transform="translate('+x*S+','+y*S+')"><g class="tl" style="--c:'+(x+(y%2))+'"><rect width="64" height="64" fill="'+bg+'"/><g transform="rotate('+Math.floor(r()*4)*90+' 32 32)">'+F[Math.floor(r()*F.length)](fg)+'</g></g></g>'}
-  svg.innerHTML=h})();
+
 
 (function(){
   var topo=document.getElementById('topo'),bt=document.getElementById('bt-serv'),mega=document.getElementById('mega'),mb=document.getElementById('menu-bt'),gv=document.getElementById('gaveta');
